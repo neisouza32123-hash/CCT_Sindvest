@@ -11,4 +11,10 @@ let deferredPrompt;const installBtn=document.getElementById('installBtn');window
 const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isInstalled=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 if(isIOS&&!isInstalled){const helpBtn=document.getElementById('iosHelpBtn'),dialog=document.getElementById('iosHelp');helpBtn.hidden=false;helpBtn.onclick=()=>dialog.showModal();document.getElementById('closeIosHelp').onclick=()=>dialog.close();document.getElementById('confirmIosHelp').onclick=()=>dialog.close();if(/WhatsApp/i.test(navigator.userAgent))document.getElementById('iosBrowserStep').innerHTML='No WhatsApp, abra o menu da página e escolha <strong>Abrir no Safari</strong>.'}
+const shareDialog=document.getElementById('shareDialog');const siteLink='https://neisouza32123-hash.github.io/CCT_Sindvest/';const shareText='Consulte a CCT Mobile Sindvest 2026: '+siteLink;const emailSubject='CCT Mobile Sindvest 2026';
+for(const id of ['shareHero','shareNav'])document.getElementById(id).onclick=()=>shareDialog.showModal();
+document.getElementById('closeShare').onclick=()=>shareDialog.close();
+document.getElementById('emailShare').href='mailto:?subject='+encodeURIComponent(emailSubject)+'&body='+encodeURIComponent('Olá!\n\nCompartilho o link da CCT Mobile Sindvest 2026 para consulta: '+siteLink+'\n\n');
+const nativeShare=document.getElementById('nativeShare');if(!navigator.share)nativeShare.hidden=true;else nativeShare.onclick=async()=>{try{await navigator.share({title:emailSubject,text:'Consulte a Convenção Coletiva do Vestuário 2026.',url:siteLink})}catch(e){if(e.name!=='AbortError')document.getElementById('copyShare').focus()}};
+document.getElementById('copyShare').onclick=async e=>{try{await navigator.clipboard.writeText(siteLink);e.currentTarget.textContent='✓ Link copiado'}catch(err){e.currentTarget.textContent=siteLink}};
 if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js');
